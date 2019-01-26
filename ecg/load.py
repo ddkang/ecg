@@ -26,7 +26,6 @@ def data_generator(batch_size, preproc, x, y):
             yield preproc.process(x, y)
 
 class Preproc:
-
     def __init__(self, ecg, labels):
         self.mean, self.std = compute_mean_std(ecg)
         self.classes = sorted(set(l for label in labels for l in label))

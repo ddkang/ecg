@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 import argparse
 import json
-import keras
 import numpy as np
 import os
 import random
@@ -13,6 +12,15 @@ import time
 import network
 import load
 import util
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
+from keras.backend.tensorflow_backend import set_session
+tf.logging.set_verbosity(tf.logging.ERROR)
+config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.30
+set_session(tf.Session(config=config))
+import keras
 
 MAX_EPOCHS = 100
 
