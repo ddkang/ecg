@@ -111,10 +111,12 @@ def add_output_layer(layer, **params):
     return Activation('softmax')(layer)
 
 def add_compile(model, **params):
-    from keras.optimizers import Adam
+    '''from keras.optimizers import Adam
     optimizer = Adam(
         lr=params["learning_rate"],
-        clipnorm=params.get("clipnorm", 1))
+        clipnorm=params.get("clipnorm", 1))'''
+    from keras.optimizers import SGD
+    optimizer = SGD(lr=0.01, decay=1e-5, momentum=0.9)
 
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizer,
