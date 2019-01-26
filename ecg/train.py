@@ -68,6 +68,9 @@ def train(args, params):
     checkpointer = keras.callbacks.ModelCheckpoint(
         filepath=get_filename_for_saving(save_dir),
         save_best_only=False)
+    ckpt_best = keras.callbacks.ModelCheckpoint(
+            os.path.join(save_dir, 'best.hdf5'),
+            save_best_only=True)
 
     batch_size = params.get("batch_size", 32)
 
@@ -80,7 +83,8 @@ def train(args, params):
             epochs=MAX_EPOCHS,
             validation_data=dev_gen,
             validation_steps=int(len(dev[0]) / batch_size),
-            callbacks=[checkpointer, reduce_lr, stopping])
+            callbacks=[checkpointer, ckpt_best, reduce_lr, stopping],
+            verbose=0)
     else:
         train_x, train_y = preproc.process(*train)
         dev_x, dev_y = preproc.process(*dev)
@@ -89,7 +93,8 @@ def train(args, params):
             batch_size=batch_size,
             epochs=MAX_EPOCHS,
             validation_data=(dev_x, dev_y),
-            callbacks=[checkpointer, reduce_lr, stopping])
+            callbacks=[checkpointer, ckpt_best, reduce_lr, stopping],
+            verbose=0)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
